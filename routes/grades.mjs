@@ -82,9 +82,11 @@ router.patch("/:id/remove", async (req, res) => {
 
 // Delete a single grade entry
 router.delete("/:id", async (req, res) => {
-  let collection = await db.collection("grades");
-  let query = { _id: ObjectId(req.params.id) };
-  let result = await collection.deleteOne(query);
+  // let collection = await db.collection("grades");
+  // let query = { _id: ObjectId(req.params.id) };
+  // let result = await collection.deleteOne(query);
+
+  let result = await Grade.deleteOne({_id: req.params.id})
 
   if (!result) res.send("Not found").status(404);
   else res.send(result).status(200);
@@ -113,10 +115,10 @@ router.get("/learner/:id", async (req, res) => {
 
 // Delete a learner's grade data
 router.delete("/learner/:id", async (req, res) => {
-  let collection = await db.collection("grades");
-  let query = { learner_id: Number(req.params.id) };
+  // let collection = await db.collection("grades");
+  // let query = { learner_id: Number(req.params.id) };
 
-  let result = await collection.deleteOne(query);
+  let result = await Grade.deleteOne({_id: req.params.id})
 
   if (!result) res.send("Not found").status(404);
   else res.send(result).status(200);
@@ -138,23 +140,30 @@ router.get("/class/:id", async (req, res) => {
 
 // Update a class id
 router.patch("/class/:id", async (req, res) => {
-  let collection = await db.collection("grades");
-  let query = { class_id: Number(req.params.id) };
+  // let collection = await db.collection("grades");
+  // let query = { class_id: Number(req.params.id) };
 
-  let result = await collection.updateMany(query, {
-    $set: { class_id: req.body.class_id }
+  // let result = await collection.updateMany(query, {
+  //   $set: { class_id: req.body.class_id }
+  // });
+
+
+  let result = await Grade.updateMany({
+    $set: {class_id: req.body.class_id}
   });
 
-  if (!result) res.send("Not found").status(404);
+  if (!result) res.send(`Not found`, result, req.params.id).status(404);
   else res.send(result).status(200);
+  // I cannot seem to get this to work
 });
 
 // Delete a class
 router.delete("/class/:id", async (req, res) => {
-  let collection = await db.collection("grades");
-  let query = { class_id: Number(req.params.id) };
+  // let collection = await db.collection("grades");
+  // let query = { class_id: Number(req.params.id) };
 
-  let result = await collection.deleteMany(query);
+
+  let result = await Grade.deleteMany({_id: req.params.id})
 
   if (!result) res.send("Not found").status(404);
   else res.send(result).status(200);
