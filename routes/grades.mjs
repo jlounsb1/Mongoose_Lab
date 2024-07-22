@@ -56,10 +56,10 @@ router.get("/:id", async (req, res) => {
 
 // Add a score to a grade entry
 router.patch("/:id/add", async (req, res) => {
-  let collection = await db.collection("grades");
-  let query = { _id: ObjectId(req.params.id) };
+  // let collection = await db.collection("grades");
+  // let query = { _id: ObjectId(req.params.id) };
 
-  let result = await collection.updateOne(query, {
+  let result = await Grade.updateOne({
     $push: { scores: req.body }
   });
 
@@ -69,10 +69,10 @@ router.patch("/:id/add", async (req, res) => {
 
 // Remove a score from a grade entry
 router.patch("/:id/remove", async (req, res) => {
-  let collection = await db.collection("grades");
-  let query = { _id: ObjectId(req.params.id) };
+  // let collection = await db.collection("grades");
+  // let query = { _id: ObjectId(req.params.id) };
 
-  let result = await collection.updateOne(query, {
+  let result = await Grade.updateOne({
     $pull: { scores: req.body }
   });
 
