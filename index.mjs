@@ -1,6 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+import mongoose from "mongoose";
+
+
 
 const PORT = 5050;
 const app = express();
@@ -9,6 +12,8 @@ import grades from "./routes/grades.mjs";
 import grades_agg from "./routes/grades_agg.mjs";
 
 app.use(express.json());
+await mongoose.connect(process.env.ATLAS_URI)
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to the API.");
