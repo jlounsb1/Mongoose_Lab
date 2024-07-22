@@ -9,7 +9,8 @@ console.log(Grade)
 
 // Create a single grade entry
 router.post("/", async (req, res) => {
-  let collection = await db.collection("grades");
+
+  let collection = await Grade;
   let newDocument = req.body;
 
   // rename fields for backwards compatibility
@@ -18,7 +19,7 @@ router.post("/", async (req, res) => {
     delete newDocument.student_id;
   }
 
-  let result = await collection.insertOne(newDocument);
+  let result = await collection.create(newDocument);
   res.send(result).status(204);
 });
 
@@ -44,10 +45,10 @@ router.get("/:id", async (req, res) => {
     // let result = await Grade.findOne({ _id: req.params.id});
   
     let result = await Grade.findById(req.params.id);
-    console.log(result)
+
     res.send(result);
   } catch (e) {
-    console.log(e)
+ 
     res.send("Invalid ID").status(400);
   }
 
@@ -91,7 +92,7 @@ router.delete("/:id", async (req, res) => {
 
 // Get route for backwards compatibility
 router.get("/student/:id", async (req, res) => {
-  res.redirect(`learner/${req.params.id}`);
+  res.redirect(`../learner/${req.params.id}`);
 });
 
 // Get a learner's grade data
@@ -106,7 +107,7 @@ router.get("/learner/:id", async (req, res) => {
 
   // if (!result) res.send("Not found").status(404);
   // else res.send(result).status(200);
-  const result = await Grade.findOne({learner_id: req.params.id})
+  const result = await Grade.findById(req.params.id)
   res.send(result)
 });
 
